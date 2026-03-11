@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SecOpsKit — Professional GRC Toolkits for Security Teams</title>
+<meta name="description" content="Ready-to-use NIST CSF 2.0, NIS2, and DORA compliance toolkits built by a certified security engineer. Save weeks of work.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+:root {
+  --navy:   #0a0f1e;
+  --navy2:  #0d1528;
+  --blue:   #1F4E79;
+  --lblue:  #2E75B6;
+  --purple: #7B2FA0;
+  --lpurp:  #B87FFF;
+  --red:    #C00000;
+  --lred:   #FF7070;
+  --green:  #1A6B3C;
+  --lgreen: #4CAF82;
+  --gold:   #FFD060;
+  --white:  #FFFFFF;
+  --gray1:  #f0f2f5;
+  --gray2:  #e5e8ed;
+  --text:   #1a1f2e;
+  --muted:  #6b7280;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,15,30,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 40px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px; font-weight: 800;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+.nav-brand span { color: var(--lblue); }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  font-size: 14px; color: rgba(255,255,255,0.6);
+  text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  background: var(--lblue);
+  color: var(--white) !important;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 500 !important;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: #1F6FBF !important; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #060a14 0%, #0a1525 50%, #080e1c 100%);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center;
+  padding: 100px 40px 60px;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(46,117,182,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46,117,182,0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+.hero-blob1 {
+  position: absolute; width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(30,100,200,0.15) 0%, transparent 70%);
+  top: -200px; left: -200px; pointer-events: none;
+}
+.hero-blob2 {
+  position: absolute; width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(120,40,200,0.12) 0%, transparent 70%);
+  bottom: -100px; right: 100px; pointer-events: none;
+}
+.hero-inner {
+  max-width: 1200px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  position: relative; z-index: 1;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(46,117,182,0.15);
+  border: 1px solid rgba(46,117,182,0.3);
+  border-radius: 20px; padding: 6px 14px;
+  font-size: 12px; color: #80BBFF;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 24px;
+  animation: fadeUp 0.6s ease both;
+}
+.hero-eyebrow::before { content: '●'; font-size: 8px; color: #4CAF82; }
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(48px, 5vw, 72px);
+  font-weight: 800; line-height: 0.95;
+  letter-spacing: -0.025em;
+  color: var(--white);
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+.hero-title .accent { color: #80BBFF; }
+.hero-title .accent2 { color: var(--gold); }
+.hero-desc {
+  margin-top: 24px;
+  font-size: 18px; font-weight: 300;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+.hero-badges {
+  margin-top: 28px;
+  display: flex; gap: 10px; flex-wrap: wrap;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+.hero-badge {
+  padding: 5px 12px; border-radius: 6px;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
+}
+.hb-nist { background: rgba(30,100,200,0.2); border: 1px solid rgba(80,150,255,0.3); color: #80BBFF; }
+.hb-nis2 { background: rgba(120,40,200,0.2); border: 1px solid rgba(160,80,255,0.3); color: #C090FF; }
+.hb-dora { background: rgba(192,0,0,0.2);   border: 1px solid rgba(220,80,80,0.3);  color: #FF9090; }
+.hb-iso  { background: rgba(0,140,80,0.2);  border: 1px solid rgba(0,200,120,0.3);  color: #60D9A0; }
+.hero-ctas {
+  margin-top: 36px; display: flex; gap: 14px; flex-wrap: wrap;
+  animation: fadeUp 0.6s 0.4s ease both;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--lblue); color: var(--white);
+  padding: 14px 28px; border-radius: 10px;
+  font-size: 15px; font-weight: 500;
+  text-decoration: none; transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(46,117,182,0.35);
+}
+.btn-primary:hover { background: #1F6FBF; transform: translateY(-1px); box-shadow: 0 6px 28px rgba(46,117,182,0.45); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8);
+  padding: 14px 28px; border-radius: 10px;
+  font-size: 15px; font-weight: 400;
+  border: 1px solid rgba(255,255,255,0.12);
+  text-decoration: none; transition: all 0.2s;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.10); }
+
+/* Hero right — product cards */
+.hero-cards {
+  display: flex; flex-direction: column; gap: 14px;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+.hero-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 14px; padding: 20px 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: all 0.25s; cursor: pointer; text-decoration: none;
+}
+.hero-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.18); transform: translateX(4px); }
+.hero-card-left {}
+.hero-card-tag {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.08em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.tag-nist { color: #80BBFF; }
+.tag-eu   { color: #C090FF; }
+.tag-kit  { color: var(--gold); }
+.hero-card-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px; font-weight: 700; color: var(--white);
+  margin-bottom: 4px;
+}
+.hero-card-desc { font-size: 12px; color: rgba(255,255,255,0.4); }
+.hero-card-price {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: var(--white); flex-shrink: 0; margin-left: 16px;
+}
+.hero-card-price .save {
+  display: block; font-size: 11px; font-weight: 400;
+  color: var(--gold); text-align: right; margin-top: 2px;
+}
+
+/* ── TRUST BAR ── */
+.trust-bar {
+  background: var(--gray1);
+  border-top: 1px solid var(--gray2);
+  border-bottom: 1px solid var(--gray2);
+  padding: 20px 40px;
+}
+.trust-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  gap: 48px; flex-wrap: wrap;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--muted); font-weight: 400;
+}
+.trust-icon { font-size: 18px; }
+
+/* ── PROBLEM SECTION ── */
+.problem {
+  padding: 100px 40px;
+  background: var(--white);
+}
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.section-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--lblue);
+  margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 3.5vw, 48px);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.02em; color: var(--text);
+  margin-bottom: 20px;
+}
+.section-sub { font-size: 18px; color: var(--muted); font-weight: 300; line-height: 1.6; max-width: 640px; }
+
+.problem-grid {
+  margin-top: 64px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+}
+.problem-card {
+  padding: 32px;
+  border: 1px solid var(--gray2);
+  border-radius: 16px;
+  background: var(--gray1);
+  position: relative; overflow: hidden;
+}
+.problem-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(to right, var(--red), transparent);
+}
+.problem-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 48px; font-weight: 800;
+  color: rgba(192,0,0,0.12);
+  line-height: 1; margin-bottom: 16px;
+}
+.problem-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px; font-weight: 700; color: var(--text);
+  margin-bottom: 10px;
+}
+.problem-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+/* ── PRODUCTS ── */
+.products {
+  padding: 100px 40px;
+  background: var(--navy);
+  position: relative; overflow: hidden;
+}
+.products-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(46,117,182,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46,117,182,0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+.products .section-title { color: var(--white); }
+.products .section-sub   { color: rgba(255,255,255,0.5); }
+.products .section-label { color: #80BBFF; }
+
+.products-grid {
+  margin-top: 64px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  position: relative; z-index: 1;
+}
+.product-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 18px; overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: all 0.25s;
+}
+.product-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.18); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.product-card.featured {
+  border-color: rgba(255,208,96,0.3);
+  box-shadow: 0 0 0 1px rgba(255,208,96,0.1);
+}
+.product-header {
+  padding: 28px 28px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.product-tag {
+  display: inline-block;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 4px 10px; border-radius: 4px;
+  margin-bottom: 14px;
+}
+.pt-nist { background: rgba(46,117,182,0.2); color: #80BBFF; }
+.pt-eu   { background: rgba(120,40,200,0.2); color: #C090FF; }
+.pt-kit  { background: rgba(255,208,96,0.15); color: var(--gold); }
+.featured-badge {
+  float: right;
+  background: rgba(255,208,96,0.15);
+  border: 1px solid rgba(255,208,96,0.3);
+  color: var(--gold);
+  font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+  padding: 3px 10px; border-radius: 20px; text-transform: uppercase;
+}
+.product-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px; font-weight: 800;
+  color: var(--white); margin-bottom: 8px; line-height: 1.2;
+}
+.product-desc { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+.product-price-row {
+  display: flex; align-items: baseline; gap: 8px; margin-top: 18px;
+}
+.product-price {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px; font-weight: 800; color: var(--white);
+}
+.product-price-was {
+  font-size: 16px; color: rgba(255,255,255,0.3);
+  text-decoration: line-through;
+}
+.product-price-save {
+  font-size: 12px; color: var(--gold);
+  background: rgba(255,208,96,0.1);
+  border-radius: 4px; padding: 2px 8px;
+}
+.product-body { padding: 20px 28px; flex: 1; }
+.product-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.product-features li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.4;
+}
+.pf-check {
+  width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; flex-shrink: 0; margin-top: 1px;
+}
+.pf-nist { background: rgba(46,117,182,0.25); color: #80BBFF; }
+.pf-eu   { background: rgba(120,40,200,0.25); color: #C090FF; }
+.pf-kit  { background: rgba(255,208,96,0.15); color: var(--gold); }
+.product-footer { padding: 20px 28px; border-top: 1px solid rgba(255,255,255,0.07); }
+.btn-buy {
+  display: block; width: 100%;
+  text-align: center; padding: 14px;
+  border-radius: 10px; font-size: 14px; font-weight: 500;
+  text-decoration: none; transition: all 0.2s;
+}
+.btn-buy-nist { background: rgba(46,117,182,0.2); color: #80BBFF; border: 1px solid rgba(46,117,182,0.3); }
+.btn-buy-nist:hover { background: rgba(46,117,182,0.35); }
+.btn-buy-eu   { background: rgba(120,40,200,0.2); color: #C090FF; border: 1px solid rgba(120,40,200,0.3); }
+.btn-buy-eu:hover { background: rgba(120,40,200,0.35); }
+.btn-buy-kit  { background: var(--gold); color: var(--navy); font-weight: 700; }
+.btn-buy-kit:hover { background: #ffc720; transform: translateY(-1px); }
+
+/* ── WHY ── */
+.why {
+  padding: 100px 40px;
+  background: var(--white);
+}
+.why-grid {
+  margin-top: 64px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+}
+.why-card {
+  padding: 36px 32px;
+  border: 1px solid var(--gray2);
+  border-radius: 16px;
+  transition: all 0.2s;
+}
+.why-card:hover { border-color: #c0d8f0; box-shadow: 0 8px 32px rgba(30,80,180,0.08); }
+.why-icon {
+  width: 52px; height: 52px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin-bottom: 20px;
+}
+.wi-blue   { background: rgba(30,100,200,0.1); }
+.wi-purple { background: rgba(120,40,200,0.1); }
+.wi-green  { background: rgba(0,140,80,0.1); }
+.wi-gold   { background: rgba(255,208,96,0.1); }
+.wi-red    { background: rgba(192,0,0,0.08); }
+.wi-teal   { background: rgba(0,120,120,0.1); }
+.why-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px; font-weight: 700; color: var(--text);
+  margin-bottom: 10px;
+}
+.why-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ── COMPARISON ── */
+.comparison {
+  padding: 100px 40px;
+  background: var(--gray1);
+}
+.comparison-table {
+  margin-top: 64px;
+  border: 1px solid var(--gray2);
+  border-radius: 16px; overflow: hidden;
+  background: var(--white);
+}
+.cmp-row {
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  border-bottom: 1px solid var(--gray2);
+}
+.cmp-row:last-child { border-bottom: none; }
+.cmp-row.header { background: var(--navy); }
+.cmp-cell {
+  padding: 16px 24px;
+  font-size: 14px; color: var(--text);
+  display: flex; align-items: center;
+  border-right: 1px solid var(--gray2);
+}
+.cmp-cell:last-child { border-right: none; }
+.cmp-row.header .cmp-cell { color: rgba(255,255,255,0.9); font-weight: 600; font-size: 13px; }
+.cmp-cell.center { justify-content: center; text-align: center; }
+.cmp-yes { color: var(--lgreen); font-size: 18px; }
+.cmp-no  { color: rgba(0,0,0,0.2); font-size: 18px; }
+.cmp-row:nth-child(even) .cmp-cell { background: var(--gray1); }
+
+/* ── ABOUT ── */
+.about {
+  padding: 100px 40px;
+  background: var(--navy);
+}
+.about-inner {
+  max-width: 900px; margin: 0 auto; text-align: center;
+}
+.about .section-title { color: var(--white); }
+.about .section-sub   { color: rgba(255,255,255,0.5); margin: 0 auto; }
+.about-card {
+  margin-top: 48px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 48px;
+  position: relative; overflow: hidden;
+}
+.about-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(to right, var(--lblue), var(--purple), var(--lgreen));
+}
+.about-credentials {
+  display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.about-cred {
+  padding: 6px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 500;
+  background: rgba(46,117,182,0.15);
+  border: 1px solid rgba(46,117,182,0.3);
+  color: #80BBFF;
+}
+.about-bio {
+  font-size: 17px; font-weight: 300;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.8; text-align: left;
+}
+.about-bio strong { color: var(--white); font-weight: 500; }
+
+/* ── FAQ ── */
+.faq {
+  padding: 100px 40px;
+  background: var(--white);
+}
+.faq-list { margin-top: 56px; max-width: 780px; }
+.faq-item {
+  border-bottom: 1px solid var(--gray2);
+  padding: 28px 0;
+}
+.faq-q {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px; font-weight: 700;
+  color: var(--text); margin-bottom: 12px;
+}
+.faq-a { font-size: 15px; color: var(--muted); line-height: 1.7; }
+.faq-a strong { color: var(--text); }
+
+/* ── CTA FINAL ── */
+.cta-final {
+  padding: 100px 40px;
+  background: linear-gradient(135deg, #060a14 0%, #0d1830 100%);
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-final-blob {
+  position: absolute; width: 800px; height: 800px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(46,117,182,0.12) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+.cta-final h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(36px, 4vw, 56px); font-weight: 800;
+  color: var(--white); line-height: 1.1; letter-spacing: -0.02em;
+  margin-bottom: 20px; position: relative; z-index: 1;
+}
+.cta-final p {
+  font-size: 18px; color: rgba(255,255,255,0.5);
+  font-weight: 300; margin-bottom: 40px;
+  position: relative; z-index: 1;
+}
+.cta-final .cta-btns {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  position: relative; z-index: 1;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: #050810;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 40px;
+  text-align: center;
+}
+.footer-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px; font-weight: 800;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.footer-links {
+  display: flex; gap: 24px; justify-content: center;
+  list-style: none; margin-bottom: 20px;
+}
+.footer-links a { font-size: 13px; color: rgba(255,255,255,0.25); text-decoration: none; }
+.footer-links a:hover { color: rgba(255,255,255,0.5); }
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.15); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero-inner       { grid-template-columns: 1fr; gap: 48px; }
+  .products-grid    { grid-template-columns: 1fr; }
+  .problem-grid     { grid-template-columns: 1fr; }
+  .why-grid         { grid-template-columns: 1fr; }
+  .cmp-row          { grid-template-columns: 1fr; }
+  nav               { padding: 0 20px; }
+  .nav-links        { display: none; }
+  .hero             { padding: 100px 20px 60px; }
+  .products, .why, .problem, .comparison, .about, .faq, .cta-final { padding: 60px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">Sec<span>Ops</span>Kit</a>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#why">Why SecOpsKit</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="https://secopkit.lemonsqueezy.com" class="nav-cta">Browse Store →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-blob1"></div>
+  <div class="hero-blob2"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Built by a Certified Security Engineer</div>
+      <h1 class="hero-title">
+        GRC toolkits that<br>
+        <span class="accent">actually</span> save<br>
+        <span class="accent2">your time</span>
+      </h1>
+      <p class="hero-desc">
+        Professional-grade NIST CSF 2.0, NIS2, and DORA compliance toolkits.
+        What takes consultants 2 weeks — ready in 2 hours.
+      </p>
+      <div class="hero-badges">
+        <div class="hero-badge hb-nist">NIST CSF 2.0</div>
+        <div class="hero-badge hb-nis2">NIS2 Directive</div>
+        <div class="hero-badge hb-dora">DORA Regulation</div>
+        <div class="hero-badge hb-iso">ISO 27001</div>
+      </div>
+      <div class="hero-ctas">
+        <a href="https://secopkit.lemonsqueezy.com" class="btn-primary">Browse All Products →</a>
+        <a href="#products" class="btn-secondary">See What's Included</a>
+      </div>
+    </div>
+    <div class="hero-cards">
+      <a href="https://secopkit.lemonsqueezy.com" class="hero-card">
+        <div class="hero-card-left">
+          <div class="hero-card-tag tag-nist">NIST CSF 2.0</div>
+          <div class="hero-card-name">Assessment Pack</div>
+          <div class="hero-card-desc">106 controls · 7-tab Excel · PDF guide</div>
+        </div>
+        <div class="hero-card-price">$197</div>
+      </a>
+      <a href="https://secopkit.lemonsqueezy.com" class="hero-card">
+        <div class="hero-card-left">
+          <div class="hero-card-tag tag-eu">NIS2 + DORA</div>
+          <div class="hero-card-name">Compliance Bundle</div>
+          <div class="hero-card-desc">79 requirements · 8 policy templates · PDF guide</div>
+        </div>
+        <div class="hero-card-price">$197</div>
+      </a>
+      <a href="https://secopkit.lemonsqueezy.com" class="hero-card" style="border-color:rgba(255,208,96,0.2)">
+        <div class="hero-card-left">
+          <div class="hero-card-tag tag-kit">Best Value</div>
+          <div class="hero-card-name">Complete GRC Kit</div>
+          <div class="hero-card-desc">Everything above · 2 Excel + 2 PDF + 8 Word</div>
+        </div>
+        <div class="hero-card-price">$297 <span class="save">Save $97</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-item"><span class="trust-icon">⚡</span> Instant download after purchase</div>
+    <div class="trust-item"><span class="trust-icon">🔄</span> Free lifetime updates</div>
+    <div class="trust-item"><span class="trust-icon">🔒</span> Secure checkout via Lemon Squeezy</div>
+    <div class="trust-item"><span class="trust-icon">🛠</span> Built by a certified security engineer</div>
+    <div class="trust-item"><span class="trust-icon">📋</span> Ready to use in under 2 hours</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem" id="why">
+  <div class="section-inner">
+    <div class="section-label">The Problem</div>
+    <h2 class="section-title">Building GRC frameworks<br>from scratch is brutal</h2>
+    <p class="section-sub">Every security team faces the same three problems when tackling NIST, NIS2, or DORA compliance.</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-num">01</div>
+        <div class="problem-title">It takes weeks</div>
+        <div class="problem-desc">Mapping 106 NIST controls or 79 NIS2/DORA requirements from scratch — with scoring criteria, gap analysis, and board reporting — takes 15–20 hours minimum. Nobody has that time.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">02</div>
+        <div class="problem-title">Consultants charge thousands</div>
+        <div class="problem-desc">A Big 4 firm charges $5,000–$15,000 for a NIS2 gap assessment. A NIST CSF engagement runs $2,000–$5,000. Most teams can't justify the budget — especially for a first assessment.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">03</div>
+        <div class="problem-title">The frameworks are complex</div>
+        <div class="problem-desc">NIST CSF 2.0 added a new GOVERN function. NIS2 Article 21 has 10 domains. DORA has 5 pillars across 45 articles. Even experienced engineers struggle to know where to start.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="products-bg"></div>
+  <div class="section-inner" style="position:relative;z-index:1">
+    <div class="section-label">The Solution</div>
+    <h2 class="section-title">Three toolkits.<br>Every major framework.</h2>
+    <p class="section-sub">Professional-grade assessments built by an engineer who uses these frameworks daily.</p>
+    <div class="products-grid">
+
+      <!-- NIST -->
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-tag pt-nist">NIST CSF 2.0</div>
+          <div class="product-name">Assessment Pack</div>
+          <div class="product-desc">Complete gap analysis toolkit covering all 106 subcategories with automatic scoring, radar chart, and triple framework mapping.</div>
+          <div class="product-price-row">
+            <div class="product-price">$197</div>
+          </div>
+        </div>
+        <div class="product-body">
+          <ul class="product-features">
+            <li><div class="pf-check pf-nist">✓</div>7-tab Excel workbook — Dashboard, Assessment, Scoring Guide, Gap Analysis, Radar Chart</li>
+            <li><div class="pf-check pf-nist">✓</div>106 controls across 6 functions (GOVERN, IDENTIFY, PROTECT, DETECT, RESPOND, RECOVER)</li>
+            <li><div class="pf-check pf-nist">✓</div>Scoring criteria for every control — levels 0, 1, 3, 4, 5</li>
+            <li><div class="pf-check pf-nist">✓</div>ISO 27001:2022 cross-mapping (103 rows)</li>
+            <li><div class="pf-check pf-nist">✓</div>SP 800-53 Rev 5 cross-mapping (288 rows — for FedRAMP, FISMA, CMMC)</li>
+            <li><div class="pf-check pf-nist">✓</div>16-page PDF user guide with remediation roadmap</li>
+          </ul>
+        </div>
+        <div class="product-footer">
+          <a href="https://secopkit.lemonsqueezy.com" class="btn-buy btn-buy-nist">Get NIST CSF Pack →</a>
+        </div>
+      </div>
+
+      <!-- NIS2/DORA -->
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-tag pt-eu">NIS2 + DORA</div>
+          <div class="product-name">Compliance Bundle</div>
+          <div class="product-desc">Full gap assessment for both EU regulations plus 8 ready-to-approve security policy templates covering every key domain.</div>
+          <div class="product-price-row">
+            <div class="product-price">$197</div>
+          </div>
+        </div>
+        <div class="product-body">
+          <ul class="product-features">
+            <li><div class="pf-check pf-eu">✓</div>NIS2 gap assessment — 36 requirements (Article 21), all 8 domains</li>
+            <li><div class="pf-check pf-eu">✓</div>DORA gap assessment — 43 requirements (Articles 5–45), all 5 pillars</li>
+            <li><div class="pf-check pf-eu">✓</div>NIS2 × DORA cross-mapping — 15 overlaps, assess once for both</li>
+            <li><div class="pf-check pf-eu">✓</div>8 Word policy templates — Risk, IR, Access, BCP, Supply Chain, Crypto, Training, Vuln</li>
+            <li><div class="pf-check pf-eu">✓</div>PDF guide with 24h/72h/4h notification timeline references</li>
+            <li><div class="pf-check pf-eu">✓</div>3-phase remediation roadmap (0–30, 30–90, 90–180 days)</li>
+          </ul>
+        </div>
+        <div class="product-footer">
+          <a href="https://secopkit.lemonsqueezy.com" class="btn-buy btn-buy-eu">Get NIS2/DORA Bundle →</a>
+        </div>
+      </div>
+
+      <!-- BUNDLE -->
+      <div class="product-card featured">
+        <div class="product-header">
+          <div class="product-tag pt-kit">Best Value <span class="featured-badge">Save $97</span></div>
+          <div class="product-name">Complete GRC Kit</div>
+          <div class="product-desc">Both toolkits combined. Every framework, every deliverable. The complete toolkit for serious GRC teams and consultants.</div>
+          <div class="product-price-row">
+            <div class="product-price">$297</div>
+            <div class="product-price-was">$394</div>
+            <div class="product-price-save">Save $97</div>
+          </div>
+        </div>
+        <div class="product-body">
+          <ul class="product-features">
+            <li><div class="pf-check pf-kit">✓</div>Everything in NIST CSF 2.0 Assessment Pack</li>
+            <li><div class="pf-check pf-kit">✓</div>Everything in NIS2/DORA Compliance Bundle</li>
+            <li><div class="pf-check pf-kit">✓</div>2 Excel workbooks + 2 PDF guides + 8 Word policies</div></li>
+            <li><div class="pf-check pf-kit">✓</div>NIST CSF ↔ ISO 27001 ↔ SP 800-53 triple mapping</li>
+            <li><div class="pf-check pf-kit">✓</div>NIS2 × DORA cross-mapping to eliminate duplicate work</li>
+            <li><div class="pf-check pf-kit">✓</div>Lifetime updates as frameworks evolve</li>
+          </ul>
+        </div>
+        <div class="product-footer">
+          <a href="https://secopkit.lemonsqueezy.com" class="btn-buy btn-buy-kit">Get Complete GRC Kit →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why" id="why-secopkit">
+  <div class="section-inner">
+    <div class="section-label">Why SecOpsKit</div>
+    <h2 class="section-title">Built by an engineer,<br>not a consultant</h2>
+    <p class="section-sub">These aren't theoretical templates — they're tools built by someone who runs NIST and NIS2 assessments in production environments.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon wi-blue">⏱</div>
+        <div class="why-title">Save 15–20 hours</div>
+        <div class="why-desc">What takes a consultant two weeks to build from scratch — scoring model, formulas, radar chart, gap analysis — is ready to open and use today.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon wi-purple">⚖️</div>
+        <div class="why-title">Regulatory accuracy</div>
+        <div class="why-desc">Every requirement is mapped to the correct article: NIS2 Art.21, DORA Art.5–45, with ISO 27001 and SP 800-53 cross-references built in.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon wi-green">📊</div>
+        <div class="why-title">Board-ready output</div>
+        <div class="why-desc">Radar charts, RAG dashboards, and executive summaries that go straight into your board deck. No extra formatting needed.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon wi-gold">🔄</div>
+        <div class="why-title">Free lifetime updates</div>
+        <div class="why-desc">As NIST CSF evolves and NIS2 implementing acts are published, your toolkit gets updated automatically via Lemon Squeezy.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon wi-red">🛡</div>
+        <div class="why-title">Proven methodology</div>
+        <div class="why-desc">Scoring criteria based on CMMI maturity levels (0–5), consistent with how Big 4 and government agencies approach maturity assessment.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon wi-teal">💼</div>
+        <div class="why-title">Consultant-ready</div>
+        <div class="why-desc">GRC consultants use these to deliver $2,000–$5,000 assessments for clients. One purchase pays for itself on the first engagement.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="comparison">
+  <div class="section-inner">
+    <div class="section-label">Comparison</div>
+    <h2 class="section-title">SecOpsKit vs the alternatives</h2>
+    <div class="comparison-table">
+      <div class="cmp-row header">
+        <div class="cmp-cell">Feature</div>
+        <div class="cmp-cell center">SecOpsKit</div>
+        <div class="cmp-cell center">Build it yourself</div>
+      </div>
+      <div class="cmp-row"><div class="cmp-cell">All 106 NIST CSF 2.0 controls scored</div><div class="cmp-cell center"><span class="cmp-yes">✓</span></div><div class="cmp-cell center"><span class="cmp-no">15–20h work</span></div></div>
+      <div class="cmp-row"><div class="cmp-cell">Scoring guide with criteria per control</div><div class="cmp-cell center"><span class="cmp-yes">✓</span></div><div class="cmp-cell center"><span class="cmp-no">Research required</span></div></div>
+      <div class="cmp-row"><div class="cmp-cell">Auto-calculated RAG dashboard</div><div class="cmp-cell center"><span class="cmp-yes">✓</span></div><div class="cmp-cell center"><span class="cmp-no">Excel skills needed</span></div></div>
+      <div class="cmp-row"><div class="cmp-cell">ISO 27001 + SP 800-53 cross-mapping</div><div class="cmp-cell center"><span class="cmp-yes">✓</span></div><div class="cmp-cell center"><span class="cmp-no">Days of mapping work</span></div></div>
+      <div class="cmp-row"><div class="cmp-cell">NIS2 Article 21 gap assessment</div><div class="cmp-cell center"><span class="cmp-yes">✓</span></div><div class="cmp-cell center"><span class="cmp-no">Legal research needed</span></div></div>
+      <div class="cmp-row"><div class="cmp-cell">DORA Articles 5–45 gap assessment</div><div class="cmp-cell center"><span class="cmp-yes">✓</span></div><div class="cmp-cell center"><span class="cmp-no">Legal research needed</span></div></div>
+      <div class="cmp-row"><div class="cmp-cell">8 policy templates (Word, ready to approve)</div><div class="cmp-cell center"><span class="cmp-yes">✓</span></div><div class="cmp-cell center"><span class="cmp-no">Days of writing</span></div></div>
+      <div class="cmp-row"><div class="cmp-cell">Total time to first deliverable</div><div class="cmp-cell center" style="color:#1A6B3C;font-weight:600;">2 hours</div><div class="cmp-cell center" style="color:#C00000;font-weight:600;">2–4 weeks</div></div>
+      <div class="cmp-row"><div class="cmp-cell">Cost</div><div class="cmp-cell center" style="color:#1A6B3C;font-weight:600;">$197–$297</div><div class="cmp-cell center" style="color:#C00000;font-weight:600;">$2,000–$15,000</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="section-label" style="color:#80BBFF">About</div>
+    <h2 class="section-title">Built by someone who does this every day</h2>
+    <p class="section-sub">SecOpsKit products are created by a working network and security engineer — not a content marketer.</p>
+    <div class="about-card">
+      <div class="about-credentials">
+        <div class="about-cred">Network & Security Engineer</div>
+        <div class="about-cred">10+ Years Experience</div>
+        <div class="about-cred">Cisco · FortiGate · Zscaler</div>
+        <div class="about-cred">NIS2 · DORA · ISO 27001</div>
+        <div class="about-cred">NIST CSF · SP 800-53</div>
+      </div>
+      <p class="about-bio">
+        I'm a network and security engineer with over 10 years of hands-on experience managing enterprise security infrastructure — firewalls, SWG, endpoint protection, and GRC programs. <strong>I built SecOpsKit because I kept rebuilding the same spreadsheets and documents from scratch for every client and employer.</strong>
+        <br><br>
+        Every toolkit in this store is something I actually use or have used in production environments. The NIST CSF scoring criteria, the NIS2 notification timelines, the policy templates — all based on real-world implementations, not just reading the specs.
+        <br><br>
+        If you're a CISO, GRC consultant, or security engineer who needs to get compliance work done without spending weeks building from scratch — SecOpsKit is for you.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="section-inner">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Common questions</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">What format are the files?</div>
+        <div class="faq-a">The assessments are <strong>Excel (.xlsx)</strong> — compatible with Microsoft Excel and Google Sheets. Policy templates are <strong>Word (.docx)</strong>. Guides are <strong>PDF</strong>. Everything is delivered as a ZIP archive.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do I need any special software?</div>
+        <div class="faq-a">Microsoft Excel 2016+ or Google Sheets for the workbooks. Microsoft Word or Google Docs for the policy templates. Any PDF reader for the guides. No plugins or subscriptions required.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Are these templates compliant with current regulations?</div>
+        <div class="faq-a">Yes. The NIS2 assessment covers <strong>Directive (EU) 2022/2555</strong> as applicable from October 2024. DORA covers <strong>Regulation (EU) 2022/2554</strong> applicable from January 2025. NIST CSF 2.0 covers the <strong>February 2024 version</strong> of the framework. All tools are updated as implementing acts are published.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I use these for client work?</div>
+        <div class="faq-a">Yes — a single purchase covers use with your own organization and with clients. GRC consultants commonly use these to accelerate client assessments. You may not resell the templates as your own product.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What if I only need one framework?</div>
+        <div class="faq-a">Buy the individual toolkit — <strong>NIST CSF Pack ($197)</strong> or <strong>NIS2/DORA Bundle ($197)</strong>. The Complete GRC Kit ($297) is the best value if you need both.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How are updates delivered?</div>
+        <div class="faq-a">Updates are delivered through your <strong>Lemon Squeezy download page</strong>. You'll receive an email when a new version is available. Updates are free for life.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="cta-final-blob"></div>
+  <h2>Start your assessment<br>in the next 10 minutes</h2>
+  <p>Instant download. No subscription. Free updates forever.</p>
+  <div class="cta-btns">
+    <a href="https://secopkit.lemonsqueezy.com" class="btn-primary" style="font-size:16px;padding:16px 32px">Browse All Products →</a>
+    <a href="https://secopkit.lemonsqueezy.com" class="btn-secondary" style="font-size:16px;padding:16px 32px">Get Complete GRC Kit — $297</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">SecOpsKit</div>
+  <ul class="footer-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="https://secopkit.lemonsqueezy.com">Store</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 SecOpsKit · secopkit.lemonsqueezy.com · All rights reserved</div>
+</footer>
+
+</body>
+</html>
